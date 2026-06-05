@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/((?!css|js|img|login.html|signup.html|index.html).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
