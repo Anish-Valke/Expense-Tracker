@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpendWise - Master your money with precision</title>
+  <meta name="description" content="Premium financial dashboard, transaction logging, category budgets, and savings analytics.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- Chart.js for high-fidelity interactive graphs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Floating Action Button for Adding Transactions globally -->
+  <button class="floating-action-fab" id="global-add-tx-fab" title="Quick Add Transaction">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+    </svg>
+  </button>
+
+  <div class="app-layout">
+    <!-- ==========================================================================
+         SIDEBAR NAVIGATION PANEL
+         ========================================================================== -->
+    <aside class="sidebar-panel">
+      <div class="sidebar-logo">
+        <div class="auth-logo-icon">S</div>
+        <span class="sidebar-logo-text">SpendWise</span>
+      </div>
+      <div class="sidebar-logo-subtext">Premium Account</div>
+
+      <nav style="flex: 1;">
+        <ul class="sidebar-menu">
+          <li class="sidebar-item active" data-view="dashboard">
+            <a href="#">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar-item" data-view="transactions">
+            <a href="#">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+              </svg>
+              <span>Transactions</span>
+            </a>
+          </li>
+          <li class="sidebar-item" data-view="budgets">
+            <a href="#">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Budgets</span>
+            </a>
+          </li>
+          <li class="sidebar-item" data-view="reports">
+            <a href="#">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              <span>Analytics</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <li class="sidebar-item" onclick="alert('Settings view is currently offline in demo mode.')">
+          <a href="#">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span>Settings</span>
+          </a>
+        </li>
+        <li class="sidebar-item" id="logout-btn">
+          <a href="#">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            <span>Logout</span>
+          </a>
+        </li>
+      </div>
+    </aside>
+
+    <!-- ==========================================================================
+         MAIN WORKSPACE AREA
+         ========================================================================== -->
+    <main class="workspace-panel">
+
+      <!-- Top action bar -->
+      <header class="top-header-bar">
+        <div class="header-search-container">
+          <svg class="header-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input type="text" id="global-search-input" class="header-search-input" placeholder="Search transactions or analytics...">
+        </div>
+
+        <div class="header-right-actions">
+          <button class="header-icon-btn" onclick="alert('No new notifications in demo session.')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+          </button>
+          
+          <button class="header-icon-btn" onclick="alert('SpendWise Help Center: Default values are pre-seeded for verification.')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </button>
+
+          <!-- User Profiling -->
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="text-align: right; display: flex; flex-direction: column;">
+              <span id="header-user-name" style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">Alex Thompson</span>
+              <span id="header-user-status" style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Premium Account</span>
+            </div>
+            <!-- Standard dynamic avatar, styled nicely -->
+            <div id="header-avatar-circle" class="profile-avatar" style="width: 36px; height: 36px; border-radius: 50%; font-size: 0.88rem; font-weight: 700; cursor: pointer; border: 1px solid var(--border-color);">A</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ==========================================================================
+           VIEW: DASHBOARD
+           ========================================================================== -->
+      <section id="dashboard-view">
+        <!-- Top statistics metrics row -->
+        <div class="budgets-summary-grid">
+          
+          <!-- Balance Widget -->
+          <div class="dashboard-card">
+            <span class="card-title-text">Total Balance</span>
+            <div class="metric-value-row" style="margin-top: 10px;">
+              <span class="metric-value" id="dash-val-balance">$42,580.00</span>
+            </div>
+            <span class="metric-delta up">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10l7-7 7 7M12 3v18"/></svg>
+              +2.4% from last month
+            </span>
+          </div>
+
+          <!-- Monthly Spending Widget -->
+          <div class="dashboard-card">
+            <div class="card-header-row" style="margin-bottom: 4px;">
+              <span class="card-title-text">Monthly Spending</span>
+              <span class="spending-budget-target" id="dash-spend-budget-ratio">$3,240.50 / $4,500 budget</span>
+            </div>
+            <div class="metric-value-row">
+              <span class="metric-value" id="dash-val-spending">$3,240.50</span>
+            </div>
+            <!-- Linear Progress Bar -->
+            <div class="spending-progress-bar">
+              <div class="spending-progress-fill" id="dash-spend-progress-bar" style="width: 72%;"></div>
+            </div>
+            <span class="metric-subtext" id="dash-spend-progress-text">72% of budget used</span>
+          </div>
+
+          <!-- Monthly Income Widget -->
+          <div class="dashboard-card">
+            <span class="card-title-text">Monthly Income</span>
+            <div class="metric-value-row" style="margin-top: 10px;">
+              <span class="metric-value" id="dash-val-income">$8,450.00</span>
+              <span class="metric-delta up" style="font-size: 0.82rem; font-weight:700;">+5% vs July</span>
+            </div>
+            <!-- Mini column bars decoration -->
+            <div class="income-history-bars">
+              <div class="income-bar" style="height: 30%"></div>
+              <div class="income-bar" style="height: 50%"></div>
+              <div class="income-bar" style="height: 70%"></div>
+              <div class="income-bar active" style="height: 100%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Charts Grid -->
+        <div class="grid-2col">
+          <!-- Spline Line chart for spending trends -->
+          <div class="dashboard-card chart-panel-card">
+            <div class="card-header-row">
+              <h2 class="chart-panel-title">Spending Trends</h2>
+              <select id="trend-timeframe" class="date-range-select" style="padding: 4px 10px;">
+                <option value="6">Last 6 Months</option>
+                <option value="3">Last 3 Months</option>
+              </select>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="dashboard-trend-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Doughnut breakdown -->
+          <div class="dashboard-card chart-panel-card">
+            <div class="card-header-row">
+              <h2 class="chart-panel-title">Category Breakdown</h2>
+            </div>
+            <div class="doughnut-overlay-wrapper">
+              <canvas id="dashboard-doughnut-canvas"></canvas>
+              <div id="dashboardPieChartEmpty" style="display: none; align-items: center; justify-content: center; height: 100%; font-size: 0.88rem; color: var(--text-muted);">No data available</div>
+              <div class="doughnut-center-info">
+                <div class="doughnut-center-value" id="dash-doughnut-total-text">$3,240</div>
+                <div class="doughnut-center-label">Total</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Rows: Recent Transactions -->
+        <div class="dashboard-card table-panel-card">
+          <div class="card-header-row">
+            <h2 class="chart-panel-title">Recent Transactions</h2>
+            <button class="btn-spendwise-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="document.querySelector('[data-view=transactions]').click()">View All</button>
+          </div>
+          <div class="recent-transactions-list" id="dashboard-transactions-list">
+            <!-- Dynamic elements loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           VIEW: TRANSACTIONS
+           ========================================================================== -->
+      <section id="transactions-view" style="display: none;">
+        <div class="header-container" style="margin-bottom: 2rem;">
+          <div>
+            <h1 class="view-header-title">Recent Transactions</h1>
+            <p class="view-header-sub">Manage and track your financial movements with precision.</p>
+          </div>
+          <button class="btn-spendwise" id="tx-add-action-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+            Add Transaction
+          </button>
+        </div>
+
+        <!-- Filters card -->
+        <div class="transaction-filters-row">
+          <div class="filters-left-group">
+            <select id="tx-date-range-select" class="date-range-select">
+              <option value="30">Last 30 Days</option>
+              <option value="60">Last 60 Days</option>
+              <option value="90">Last 90 Days</option>
+            </select>
+
+            <div class="filter-pills-container" id="tx-category-pills">
+              <span class="filter-pill active" data-category="">All</span>
+              <span class="filter-pill" data-category="Groceries">Groceries</span>
+              <span class="filter-pill" data-category="Rent">Rent</span>
+              <span class="filter-pill" data-category="Dining Out">Dining</span>
+              <span class="filter-pill" data-category="Transport">Transport</span>
+              <span class="filter-pill" data-category="Utilities">Utilities</span>
+              <span class="filter-pill" data-category="Entertainment">Entertainment</span>
+              <span class="filter-pill" data-category="Income">Income</span>
+            </div>
+          </div>
+
+          <div class="filters-right-group">
+            <!-- Search field integrated into the filter bar -->
+            <input type="text" id="tx-search-input" class="spendwise-form-control" placeholder="Search..." style="padding: 6px 12px; width: 180px; font-size:0.82rem;">
+            
+            <button class="btn-spendwise-outline" style="padding: 8px 14px;" id="btn-tx-more-filters" onclick="alert('Advanced filter conditions are pre-configured in demo.')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-8 2a2 2 0 100 4m0-4v-2m0 4v2m8 2v-2m0 2a2 2 0 100 4m0-4a2 2 0 110 4m4-10H4m8 0h8M4 14h16m-4 4H4m12 0h4"/></svg>
+              More Filters
+            </button>
+            
+            <button class="btn-spendwise-outline" style="padding: 8px 14px;" onclick="alert('Export complete: SpendWise_Report.csv has been prepared.')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export
+            </button>
+          </div>
+        </div>
+
+        <!-- Data table card wrapper -->
+        <div class="dashboard-card" style="padding: 0; overflow: hidden;">
+          <div style="overflow-x: auto; width: 100%;">
+            <table class="transactions-data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th style="width: 100px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-list-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pagination footer -->
+        <div class="table-pagination-footer">
+          <span class="pagination-info-text" id="pagination-summary-text">Showing 1 to 5 of 240 entries</span>
+          
+          <div class="pagination-btn-group">
+            <button class="pagination-page-btn arrow">&lsaquo;</button>
+            <button class="pagination-page-btn active">1</button>
+            <button class="pagination-page-btn">2</button>
+            <button class="pagination-page-btn">3</button>
+            <button class="pagination-page-btn arrow">&rsaquo;</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           VIEW: BUDGETS
+           ========================================================================== -->
+      <section id="budgets-view" style="display: none;">
+        <div class="header-container" style="margin-bottom: 2rem;">
+          <div>
+            <h1 class="view-header-title">Monthly Budgets</h1>
+            <p class="view-header-sub">Track and manage your spending limits.</p>
+          </div>
+          <button class="btn-spendwise" id="budget-create-action-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+            Create New Budget
+          </button>
+        </div>
+
+        <!-- Budget statistics counters -->
+        <div class="budgets-summary-grid">
+          <div class="dashboard-card">
+            <span class="card-title-text">Total Budgeted</span>
+            <div class="budget-summary-value" style="margin-top: 10px;" id="budget-sum-limit">$4,250.00</div>
+          </div>
+          <div class="dashboard-card">
+            <span class="card-title-text">Total Spent</span>
+            <div class="budget-summary-value spent" style="margin-top: 10px;" id="budget-sum-spent">$2,140.50</div>
+          </div>
+          <div class="dashboard-card">
+            <span class="card-title-text">Remaining</span>
+            <div class="budget-summary-value" style="margin-top: 10px;" id="budget-sum-remaining">$2,109.50</div>
+          </div>
+        </div>
+
+        <!-- Budgets list grids -->
+        <div class="budget-grid-layout" id="budgets-list-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           VIEW: ANALYTICS (REPORTS)
+           ========================================================================== -->
+      <section id="reports-view" style="display: none;">
+        <div class="header-container" style="margin-bottom: 2rem;">
+          <div>
+            <h1 class="view-header-title">Financial Analytics</h1>
+            <p class="view-header-sub">Deep dive into your spending habits and savings trends.</p>
+          </div>
+          <div class="header-actions" style="display:flex; gap:10px;">
+            <select id="analytics-timeframe" class="date-range-select">
+              <option value="6">Last 6 Months</option>
+              <option value="12">Last 12 Months</option>
+            </select>
+            <button class="btn-spendwise" onclick="alert('Export ready. PDF document compiled.')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Analytics grid widgets -->
+        <div class="grid-2col" style="margin-bottom: 1.5rem;">
+          <!-- Spending Comparison Bar chart (Fixed vs Variable) -->
+          <div class="dashboard-card chart-panel-card">
+            <div class="card-header-row">
+              <h2 class="chart-panel-title">Spending Comparison</h2>
+              <div style="display:flex; gap:12px; font-size:0.75rem; font-weight:700;">
+                <span style="display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background-color:#0f172a;"></span>Fixed</span>
+                <span style="display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background-color:#15803d;"></span>Variable</span>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="analytics-bar-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Savings Rate dark widget -->
+          <div class="dashboard-card savings-rate-card">
+            <div class="card-header-row">
+              <span class="card-title-text" style="color: #94a3b8;">Savings Rate</span>
+              <svg fill="none" stroke="#34d399" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+              </svg>
+            </div>
+            <div class="metric-value-row" style="margin-top: 10px;">
+              <span class="metric-value" id="analytics-savings-rate-val">32.4%</span>
+              <span class="metric-delta up" id="analytics-savings-rate-delta" style="color: #34d399;">+4.2% vs last mo</span>
+            </div>
+            
+            <div class="savings-rate-bar-container">
+              <div class="savings-rate-bar-fill" id="analytics-savings-rate-bar"></div>
+            </div>
+
+            <div class="savings-details-row">
+              <div class="savings-details-col">
+                <span class="savings-details-label">Current Savings</span>
+                <span class="savings-details-value" id="analytics-current-savings-text">$4,120.00</span>
+              </div>
+              <div class="savings-details-col">
+                <span class="savings-details-label">Goal Gap</span>
+                <span class="savings-details-value" id="analytics-goal-gap-text" style="color: #fb7185;">-$880.00</span>
+              </div>
+            </div>
+
+            <button class="btn-savings-action" onclick="alert('Savings Goals planner initialized.')">View Savings Goals</button>
+          </div>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Top Merchants list -->
+          <div class="dashboard-card merchant-list-card">
+            <div class="card-header-row">
+              <h2 class="chart-panel-title">Top Merchants</h2>
+              <span style="font-size:0.8rem; color:var(--accent-green); font-weight:700; cursor:pointer;" onclick="document.querySelector('[data-view=transactions]').click()">View full list</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:2px; margin-top:10px;" id="analytics-merchants-list">
+              <!-- Dynamically populated in js -->
+            </div>
+          </div>
+
+          <!-- Budget Health Score gauge -->
+          <div class="dashboard-card budget-health-annular-card">
+            <div class="card-header-row">
+              <h2 class="chart-panel-title">Budget Health</h2>
+            </div>
+            <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:1rem; font-weight:500;">You are under budget in 4/5 categories this month.</p>
+            <div style="display:flex; align-items:center; justify-content:center;">
+              <div style="position:relative; width: 140px; height: 140px;">
+                <canvas id="analytics-gauge-canvas"></canvas>
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;">
+                  <span class="health-gauge-score">85%</span>
+                </div>
+              </div>
+              <div class="health-gauge-label-col">
+                <span class="health-gauge-label">Efficiency Score</span>
+                <span class="health-gauge-status" style="color:var(--accent-green)">Good</span>
+              </div>
+            </div>
+            
+            <div style="margin-top:1.5rem; border-top:1px solid var(--border-color); padding-top:1rem;">
+              <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Financial Tip</span>
+              <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:4px; line-height:1.45; font-weight:500;">Your Dining Out category is 30% utilized. Reducing minor weekly coffee orders could redirect $50/mo to savings.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: ADD / EDIT TRANSACTION
+       ========================================================================== -->
+  <div class="spendwise-modal-overlay" id="spendwise-transaction-modal">
+    <div class="spendwise-modal-content">
+      <button class="spendwise-modal-close-btn" aria-label="Close modal">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+      
+      <div class="spendwise-modal-header">
+        <h2 class="spendwise-modal-title" id="form-title-tx">Add Transaction</h2>
+      </div>
+
+      <form id="spendwise-tx-form">
+        <input type="hidden" id="form-tx-id-val">
+
+        <div class="spendwise-form-group">
+          <label for="form-tx-title" class="spendwise-form-label">Title / Memo *</label>
+          <input type="text" id="form-tx-title" class="spendwise-form-control" placeholder="e.g. Whole Foods Market, AWS Subscription" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="spendwise-form-group">
+            <label for="form-tx-amount" class="spendwise-form-label">Amount ($) *</label>
+            <input type="number" step="0.01" min="0.01" id="form-tx-amount" class="spendwise-form-control" placeholder="0.00" required>
+          </div>
+
+          <div class="spendwise-form-group">
+            <label for="form-tx-type" class="spendwise-form-label">Type *</label>
+            <select id="form-tx-type" class="spendwise-form-control" required>
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="spendwise-form-group">
+            <label for="form-tx-category" class="spendwise-form-label">Category *</label>
+            <select id="form-tx-category" class="spendwise-form-control" required>
+              <!-- Dynamically populated in JS -->
+            </select>
+          </div>
+
+          <div class="spendwise-form-group">
+            <label for="form-tx-date" class="spendwise-form-label">Date *</label>
+            <input type="date" id="form-tx-date" class="spendwise-form-control" required>
+          </div>
+        </div>
+
+        <div class="spendwise-form-group">
+          <label for="form-tx-description" class="spendwise-form-label">Memo details (Optional)</label>
+          <input type="text" id="form-tx-description" class="spendwise-form-control" placeholder="e.g. Card Ending *4421, Direct Deposit">
+        </div>
+
+        <div class="spendwise-modal-footer">
+          <button type="button" class="btn-spendwise-outline modal-close-btn-cancel">Cancel</button>
+          <button type="submit" class="btn-spendwise">Save Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: CREATE / UPDATE BUDGET LIMIT
+       ========================================================================== -->
+  <div class="spendwise-modal-overlay" id="spendwise-budget-modal">
+    <div class="spendwise-modal-content">
+      <button class="spendwise-modal-close-btn" aria-label="Close modal">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+      <div class="spendwise-modal-header">
+        <h2 class="spendwise-modal-title">Create Category Budget</h2>
+      </div>
+
+      <form id="spendwise-budget-form">
+        <div class="spendwise-form-group">
+          <label for="form-budget-category" class="spendwise-form-label">Category *</label>
+          <select id="form-budget-category" class="spendwise-form-control" required>
+            <option value="Groceries">Groceries</option>
+            <option value="Rent">Rent</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Dining Out">Dining Out</option>
+            <option value="Transport">Transport</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <div class="spendwise-form-group">
+          <label for="form-budget-limit" class="spendwise-form-label">Monthly Limit ($) *</label>
+          <input type="number" step="0.01" min="0.01" id="form-budget-limit" class="spendwise-form-control" placeholder="300.00" required>
+        </div>
+
+        <div class="spendwise-modal-footer">
+          <button type="button" class="btn-spendwise-outline modal-close-btn-cancel">Cancel</button>
+          <button type="submit" class="btn-spendwise">Save Budget</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Load API Client Wrapper and Main Application Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
